@@ -1,0 +1,42 @@
+﻿using CMSGTechnical.Domain.Models;
+
+namespace CMSGTechnical.Mediator.Dtos
+{
+    public class MenuItemDto
+    {
+        public int Id { get; set; }
+
+        public string Name { get; set; }
+        public string? Description { get; set; }
+        public decimal Price { get; set; }
+
+        public int Order { get; set; } = 0;
+
+        public string? Category { get; set; }
+
+        public int Quantity { get; set; } = 1;
+
+        public ICollection<MenuItemDto> ChildItems { get; set; } = new List<MenuItemDto>();
+    }
+
+    public static class MenuItemExtensions
+    {
+        public static IEnumerable<MenuItemDto> ToDto(this IEnumerable<MenuItem> items) =>
+            items.Select(i => i.ToDto());
+
+        public static MenuItemDto ToDto(this MenuItem menuItem)
+        {
+            return new MenuItemDto()
+            {
+                Price = menuItem.Price,
+                ChildItems = menuItem.ChildItems.ToDto().ToList(),
+                Description = menuItem.Description,
+                Name = menuItem.Name,
+                Id = menuItem.Id,
+                Order = menuItem.Order,
+                Category = menuItem.Category,
+                Quantity = menuItem.Quantity,
+            };
+        }
+    }
+}
