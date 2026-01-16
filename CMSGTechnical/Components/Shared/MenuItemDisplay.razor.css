@@ -1,0 +1,133 @@
+﻿:root {
+  --menu-text: #4a4a4a;
+  --menu-bg: linear-gradient(135deg, #ffe6f2, #e6f7ff);
+  --menu-bg-mobile: linear-gradient(135deg, #ffd6e8, #d6f2ff);
+  --menu-accent: #ffb3d9;
+  --menu-shadow: rgba(255, 182, 193, 0.35);
+}
+
+/* --------------------------------------------- */
+/* DESKTOP MENU (floating pastel bubble) */
+/* --------------------------------------------- */
+
+.menu-display {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  background: var(--menu-bg);
+  color: var(--menu-text);
+  padding: 1.25rem 1.5rem;
+  border-radius: 16px;
+  box-shadow: 0 6px 14px var(--menu-shadow);
+  max-width: 300px;
+  z-index: 2000;
+  backdrop-filter: blur(6px);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  border: 2px solid rgba(255, 182, 193, 0.25);
+}
+
+/* Title/header */
+.menu-header {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  color: #5c4b51;
+}
+
+/* Items container */
+.menu-items {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+/* Individual item */
+.menu-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.55);
+  padding: 0.5rem 0.75rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(255, 182, 193, 0.2);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+/* Soft cat‑pounce hover */
+.menu-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(255, 182, 193, 0.35);
+}
+
+/* Buttons */
+.menu-display button {
+  background: var(--menu-accent);
+  border: none;
+  padding: 0.6rem 1rem;
+  border-radius: 12px;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.1s ease;
+}
+
+.menu-display button:hover {
+  background: #ff99cc;
+  transform: translateY(-1px);
+}
+
+/* --------------------------------------------- */
+/* 📱 MOBILE MENU (bottom pastel drawer) */
+/* --------------------------------------------- */
+
+@media (max-width: 600px) {
+  .menu-display {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    width: 100%;
+    border-radius: 20px 20px 0 0;
+    padding: 1.25rem 1.5rem;
+    background: var(--menu-bg-mobile);
+    max-width: none;
+    max-height: 60vh;
+    overflow-y: auto;
+    box-shadow: 0 -4px 14px var(--menu-shadow);
+  }
+
+  .menu-items {
+    max-height: none;
+  }
+
+  .menu-display button {
+    width: 100%;
+  }
+
+  .top-row {
+    z-index: 3000;
+  }
+
+  .sidebar {
+    z-index: 1500;
+  }
+}
+
+/* --------------------------------------------- */
+/* 🖥️ DESKTOP LAYOUT INTEGRATION */
+/* --------------------------------------------- */
+
+@media (min-width: 641px) {
+  .sidebar {
+    z-index: 100;
+  }
+
+  .top-row {
+    z-index: 1500;
+  }
+}
+/* --------------------------------------------- */

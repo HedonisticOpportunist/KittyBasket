@@ -1,0 +1,157 @@
+/* --------------------------------------------- */
+/* NAVBAR TOGGLER (mobile hamburger) */
+/* --------------------------------------------- */
+
+.navbar-toggler {
+  appearance: none;
+  cursor: pointer;
+  width: 3.5rem;
+  height: 2.5rem;
+  position: absolute;
+  top: 0.5rem;
+  right: 1rem;
+  border-radius: 10px;
+  border: 2px solid rgba(255, 182, 193, 0.35);
+  background: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28150, 120, 150, 0.7%29' stroke-linecap='round' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e")
+      no-repeat center/1.75rem,
+    linear-gradient(135deg, #ffe6f2, #e6f7ff);
+  box-shadow: 0 4px 10px rgba(255, 182, 193, 0.25);
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.navbar-toggler:checked {
+  background: linear-gradient(135deg, #ffd6e8, #d6f2ff);
+  border-color: rgba(255, 182, 193, 0.55);
+}
+
+/* --------------------------------------------- */
+/* TOP ROW (header bar) */
+/* --------------------------------------------- */
+
+.top-row {
+  height: 3.5rem;
+  background: linear-gradient(90deg, #ffeef7, #e8f4ff);
+  display: flex;
+  align-items: center;
+  padding-left: 1rem;
+  box-shadow: 0 2px 8px rgba(255, 182, 193, 0.25);
+}
+
+/* --------------------------------------------- */
+/* BRAND */
+/* --------------------------------------------- */
+
+.navbar-brand {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #5c4b51;
+}
+
+/* --------------------------------------------- */
+/* ICONS */
+/* --------------------------------------------- */
+
+.bi {
+  display: inline-block;
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-right: 0.75rem;
+  background-size: cover;
+  flex-shrink: 0;
+  filter: drop-shadow(0 1px 2px rgba(255, 182, 193, 0.35));
+}
+
+/* --------------------------------------------- */
+/* NAV ITEMS */
+/* --------------------------------------------- */
+
+.nav-item {
+  font-size: 0.95rem;
+  padding-bottom: 0.5rem;
+}
+
+.nav-item:first-of-type {
+  padding-top: 1rem;
+}
+
+.nav-item:last-of-type {
+  padding-bottom: 1rem;
+}
+
+.nav-item ::deep .nav-link {
+  color: #6b5e6e;
+  background: rgba(255, 255, 255, 0.55);
+  border-radius: 12px;
+  height: 3rem;
+  display: flex;
+  align-items: center;
+  padding: 0 0.75rem;
+  width: 100%;
+  transition: background 0.15s ease, transform 0.15s ease;
+  box-shadow: 0 2px 6px rgba(255, 182, 193, 0.2);
+}
+
+.nav-item ::deep a.active {
+  background: linear-gradient(135deg, #ffd6e8, #d6f2ff);
+  color: #4a4a4a;
+  box-shadow: 0 3px 8px rgba(255, 182, 193, 0.35);
+}
+
+.nav-item ::deep .nav-link:hover {
+  background: rgba(255, 255, 255, 0.75);
+  transform: translateY(-2px);
+}
+
+/* --------------------------------------------- */
+/* COLLAPSIBLE NAV (mobile) */
+/* --------------------------------------------- */
+
+.nav-scrollable {
+  display: none;
+  background: linear-gradient(180deg, #ffeef7, #e8f4ff);
+  padding: 0.5rem 0;
+  border-top: 2px solid rgba(255, 182, 193, 0.25);
+  box-shadow: 0 4px 10px rgba(255, 182, 193, 0.2);
+}
+
+.navbar-toggler:checked ~ .nav-scrollable {
+  display: block;
+  animation: slideDown 0.25s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-0.5rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* --------------------------------------------- */
+/* DESKTOP MODE */
+/* --------------------------------------------- */
+
+@media (min-width: 641px) {
+  .navbar-toggler {
+    display: none;
+  }
+
+  .nav-scrollable {
+    display: block;
+    height: calc(100vh - 3.5rem);
+    overflow-y: auto;
+    padding-top: 1rem;
+    background: linear-gradient(180deg, #ffe6f2, #e6f7ff);
+    border-right: 2px solid rgba(255, 182, 193, 0.25);
+    box-shadow: 4px 0 12px rgba(255, 182, 193, 0.2);
+  }
+
+  .nav-item {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+/* --------------------------------------------- */

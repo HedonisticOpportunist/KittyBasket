@@ -1,0 +1,127 @@
+﻿:root {
+  --basket-text: #4a4a4a;
+  --basket-bg: linear-gradient(135deg, #ffe6f2, #e6f7ff);
+  --basket-bg-mobile: linear-gradient(135deg, #ffd6e8, #d6f2ff);
+  --basket-accent: #ffb3d9;
+  --basket-shadow: rgba(255, 182, 193, 0.35);
+}
+
+/* --------------------------------------------- */
+/* DESKTOP BASKET */
+/* --------------------------------------------- */
+
+.basket-display {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  background: var(--basket-bg);
+  color: var(--basket-text);
+  padding: 1.25rem 1.5rem;
+  border-radius: 16px;
+  box-shadow: 0 6px 14px var(--basket-shadow);
+  max-width: 320px;
+  z-index: 2000;
+  backdrop-filter: blur(6px);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  border: 2px solid rgba(255, 182, 193, 0.25);
+}
+
+/* Basket header */
+.basket-header {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #5c4b51;
+}
+
+/* Items */
+.basket-items {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+.basket-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.55);
+  padding: 0.5rem 0.75rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(255, 182, 193, 0.2);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+/* Soft cat‑pounce hover */
+.basket-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(255, 182, 193, 0.35);
+}
+
+.basket-item img {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+/* Footer */
+.basket-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.basket-display button {
+  background: var(--basket-accent);
+  border: none;
+  padding: 0.6rem 1rem;
+  border-radius: 12px;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.1s ease;
+}
+
+.basket-display button:hover {
+  background: #ff99cc;
+  transform: translateY(-1px);
+}
+
+/* --------------------------------------------- */
+/* 📱 MOBILE BASKET */
+/* --------------------------------------------- */
+
+@media (max-width: 640.98px) {
+  .basket-display {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    width: 100%;
+    border-radius: 20px 20px 0 0;
+    padding: 1.25rem 1.5rem;
+    background: var(--basket-bg-mobile);
+    max-width: none;
+    max-height: 60vh;
+    overflow-y: auto;
+    box-shadow: 0 -4px 14px var(--basket-shadow);
+  }
+
+  .basket-items {
+    max-height: none;
+  }
+
+  .basket-footer {
+    flex-direction: column;
+    gap: 0.75rem;
+    align-items: stretch;
+  }
+
+  .basket-display button {
+    width: 100%;
+  }
+}

@@ -1,0 +1,159 @@
+.page {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #fff7fb, #f3f8ff);
+}
+
+/* Main content grows naturally */
+main {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(6px);
+  border-radius: 16px;
+  margin: 1rem;
+  padding: 1rem;
+  box-shadow: 0 4px 12px rgba(255, 182, 193, 0.25);
+}
+
+/* Sidebar (desktop) */
+.sidebar {
+  background: linear-gradient(180deg, #ffe6f2 0%, #e6f7ff 70%);
+  color: #4a4a4a;
+  border-right: 2px solid rgba(255, 182, 193, 0.25);
+  box-shadow: 4px 0 12px rgba(255, 182, 193, 0.2);
+}
+
+/* Top bar */
+.top-row {
+  background: linear-gradient(90deg, #ffeef7, #e8f4ff);
+  border-bottom: 2px solid rgba(255, 182, 193, 0.25);
+  height: 3.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 1rem;
+  box-shadow: 0 2px 8px rgba(255, 182, 193, 0.2);
+  color: #4a4a4a;
+  font-weight: 600;
+}
+
+/* Links inside top row */
+.top-row ::deep a,
+.top-row ::deep .btn-link {
+  white-space: nowrap;
+  margin-left: 1.5rem;
+  text-decoration: none;
+  color: #5c4b51;
+  transition: color 0.2s ease;
+}
+
+.top-row ::deep a:hover,
+.top-row ::deep .btn-link:hover {
+  text-decoration: underline;
+  color: #ff99cc;
+}
+
+.top-row ::deep a:first-child {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* --------------------------------------------- */
+/* 📱 Mobile layout */
+/* --------------------------------------------- */
+
+@media (max-width: 640.98px) {
+  .top-row {
+    justify-content: space-between;
+    padding: 0 1rem;
+  }
+
+  .top-row ::deep a,
+  .top-row ::deep .btn-link {
+    margin-left: 0;
+  }
+
+  /* Sidebar collapses naturally */
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+    border-right: none;
+    box-shadow: none;
+  }
+
+  main {
+    margin: 0.5rem;
+    border-radius: 12px;
+  }
+}
+
+/* --------------------------------------------- */
+/* 🖥️ Desktop layout */
+/* --------------------------------------------- */
+
+@media (min-width: 641px) {
+  .page {
+    flex-direction: row;
+  }
+
+  .sidebar {
+    width: 250px;
+    height: 100vh;
+    position: sticky;
+    top: 0;
+    flex-shrink: 0;
+  }
+
+  .top-row {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    padding-left: 2rem !important;
+    padding-right: 1.5rem !important;
+  }
+
+  .top-row.auth ::deep a:first-child {
+    flex: 1;
+    text-align: right;
+    width: 0;
+  }
+
+  article {
+    padding-left: 2rem !important;
+    padding-right: 1.5rem !important;
+  }
+}
+
+/* --------------------------------------------- */
+/* Blazor error UI */
+/* --------------------------------------------- */
+
+#blazor-error-ui {
+  background: #fff0f5;
+  border-top: 2px solid #ffb6c1;
+  bottom: 0;
+  box-shadow: 0 -2px 8px rgba(255, 182, 193, 0.3);
+  display: none;
+  left: 0;
+  padding: 0.6rem 1.25rem 0.7rem 1.25rem;
+  position: fixed;
+  width: 100%;
+  z-index: 1000;
+  color: #4a4a4a;
+  font-weight: 600;
+}
+
+#blazor-error-ui .dismiss {
+  cursor: pointer;
+  position: absolute;
+  right: 0.75rem;
+  top: 0.5rem;
+  color: #ff69b4;
+}
+
+#blazor-error-ui.show {
+  display: block;
+}

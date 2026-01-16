@@ -1,0 +1,55 @@
+﻿@using CMSGTechnical.Code
+@using CMSGTechnical.Mediator.Dtos
+
+<div class="basket">
+
+    @foreach (var item in Basket.MenuItems)
+    {
+        <div class="basket-item" @key="item.Id">
+            <div>
+                @item.Name - £@item.Price
+                <p>Current Quantity: @item.Quantity</p>
+            </div>
+
+            <div>
+                <button class="btn btn-primary btn-round" @onclick="() => Add(item)">🐾</button>
+                <button class="btn btn-primary btn-round" @onclick="() => Remove(item)">🗑️</button>
+            </div>
+        </div>
+    }
+
+    <div class="mt-3">
+        Subtotal: £ @BasketService.Subtotal
+    </div>
+    <div>
+        Delivery: £ @BasketService.Fee
+    </div>
+    <div>
+        <strong>Total: £ @BasketService.Total</strong>
+    </div>
+</div>
+
+@code {
+
+    [CascadingParameter]
+    private BasketService BasketService { get; set; } = default!;
+
+    private BasketDto Basket => BasketService.Basket;
+
+    private EventHandler<BasketChangedEventArgs>? _handler;
+
+    protected override void OnInitialized()
+    {
+        _handler = (sender, args) => StateHasChanged();
+        BasketService.OnChange += _handler;
+    }
+
+    public void Dispose()
+    {
+        if (_handler is not null)
+            BasketService.OnChange -= _handler;
+    }
+
+    private Task Add(MenuItemDto item) => BasketService.Add(item);
+    private Task Remove(MenuItemDto item) => BasketService.Remove(item);
+}

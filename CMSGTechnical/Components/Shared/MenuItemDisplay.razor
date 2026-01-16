@@ -1,0 +1,55 @@
+﻿@using CMSGTechnical.Domain.Models
+@using CMSGTechnical.Mediator.Dtos
+
+<div class="mt-2 mb-2 d-flex justify-content-between">
+    <div>
+        <div class="menu-item">
+            <strong>@Item.Name (<span class="price">£@Item.Price</span>)</strong>
+            <div>
+                <em>@Item.Category</em>
+            </div>
+
+            @if (!string.IsNullOrWhiteSpace(Item.Description))
+            {
+                <div>
+                    @Item.Description
+                </div>
+            }
+        </div>
+
+    </div>
+
+    <div>
+        @if (OnAdd.HasDelegate)
+        {
+            <button class="btn btn-primary btn-round" @onclick="Add">🐾</button>
+        }
+        @if (OnRemove.HasDelegate)
+        {
+            <button class="btn btn-primary btn-round" @onclick="Remove">🗑️</button>
+        }
+    </div>
+</div>
+
+
+@code {
+
+    [Parameter, EditorRequired]
+    public MenuItemDto Item { get; set; } // Enssures that chocolate is not getting selecting by mistake all the time.
+
+
+
+    [Parameter]
+    public EventCallback<MenuItemDto> OnAdd { get; set; }
+
+    [Parameter]
+    public EventCallback<MenuItemDto> OnRemove { get; set; }
+
+
+    private async Task Remove() => await OnRemove.InvokeAsync(Item);
+    private async Task Add() => await OnAdd.InvokeAsync(Item);
+
+
+
+
+}
