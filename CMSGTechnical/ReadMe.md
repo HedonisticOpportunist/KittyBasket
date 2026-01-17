@@ -18,7 +18,7 @@ Below are a number of "tickets" that are needed to bring this site up to "MVP". 
 - Menu items need a category, and this needs to be reflected in the UI (the categories themselves are arbitary. ie: Starter, Main, Dessert) 🐾
 - The restuarant always add £2 as a delivery fee, this needs to be included in the basket total 🐾
 - The basket needs to group the items together using a quanity display 🐾
-- Code coverage currently sits at 0%
+- Code coverage currently sits at 0% 🐾
 
 ### Bug Tickets (sent in by QA)
 
@@ -27,3 +27,4 @@ Below are a number of "tickets" that are needed to bring this site up to "MVP". 
 - Chocolate Cake's description isn't showing 🐾
 - The basket doesn't show £ 🐾
 - The basket total doesn't add up correctly 🐾
+
