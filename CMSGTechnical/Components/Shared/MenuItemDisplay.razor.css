@@ -1,4 +1,4 @@
-﻿:root {
+﻿﻿:root {
   --menu-text: #4a4a4a;
   --menu-bg: linear-gradient(135deg, #ffe6f2, #e6f7ff);
   --menu-bg-mobile: linear-gradient(135deg, #ffd6e8, #d6f2ff);
@@ -45,16 +45,19 @@
   overflow-y: auto;
 }
 
-/* Individual item */
+/* Individual item — FIXED to stack vertically */
 .menu-item {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column; /* <— THIS is the key fix */
+  align-items: flex-start;
+  gap: 0.35rem;
   background: rgba(255, 255, 255, 0.55);
   padding: 0.5rem 0.75rem;
   border-radius: 12px;
   box-shadow: 0 2px 6px rgba(255, 182, 193, 0.2);
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
 }
 
 /* Soft cat‑pounce hover */
@@ -72,7 +75,9 @@
   color: white;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.15s ease, transform 0.1s ease;
+  transition:
+    background 0.15s ease,
+    transform 0.1s ease;
 }
 
 .menu-display button:hover {
@@ -101,7 +106,9 @@
   }
 
   .menu-items {
-    max-height: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
   }
 
   .menu-display button {

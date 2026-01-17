@@ -1,25 +1,26 @@
-@using CMSGTechnical.Domain.Models
+﻿@using CMSGTechnical.Domain.Models
 @using CMSGTechnical.Mediator.Dtos
 
-<div class="mt-2 mb-2 d-flex justify-content-between">
-    <div>
+<div class="menu-row">
+    <div class="menu-left">
         <div class="menu-item">
-            <strong>@Item?.Name (<span class="price">£@Item?.Price</span>)</strong>
-            <div>
+            <p class="menu-title">
+                <strong>@Item?.Name</strong>
+                <span class="price">£@Item?.Price</span>
+            </p>
+
+            <p class="menu-category">
                 <em>@Item?.Category</em>
-            </div>
+            </p>
 
             @if (!string.IsNullOrWhiteSpace(Item?.Description))
             {
-                <div>
-                    @Item.Description
-                </div>
+                <p class="menu-description">@Item.Description</p>
             }
         </div>
-
     </div>
 
-    <div>
+    <div class="menu-buttons">
         @if (OnAdd.HasDelegate)
         {
             <button class="btn btn-primary btn-round" @onclick="Add">🐾</button>
@@ -30,7 +31,6 @@
         }
     </div>
 </div>
-
 
 @code {
 
