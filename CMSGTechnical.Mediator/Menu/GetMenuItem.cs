@@ -22,7 +22,9 @@ namespace CMSGTechnical.Mediator.Menu
         )
         {
             var r = await MenuItems.Get(request.Id, cancellationToken);
+#pragma warning disable CS8604 // Possible null reference argument.
             return r.ToDto();
+#pragma warning restore CS8604 // Possible null reference argument.
         }
     }
 }

@@ -18,7 +18,9 @@ namespace CMSGTechnical.Mediator.Basket
         public async Task<BasketDto> Handle(GetBasket request, CancellationToken cancellationToken)
         {
             var r = await Baskets.Get(request.Id, cancellationToken);
-            return r.ToDto();
+#pragma warning disable CS8603 // Possible null reference return.
+            return r?.ToDto();
+#pragma warning restore CS8603 // Possible null reference return.
         }
     }
 }
