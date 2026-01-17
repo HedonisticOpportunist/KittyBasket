@@ -1,17 +1,13 @@
 ﻿using CMSGTechnical.Domain;
 using CMSGTechnical.Domain.Interfaces;
-using CMSGTechnical.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace CMSGTechnical.Repository
 {
     public class ApplicationDbContext : DbContext
     {
-
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
-        {
-            
-        }
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+            : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -21,7 +17,5 @@ namespace CMSGTechnical.Repository
 
             builder.SeedData();
         }
-       
-       
     }
 }

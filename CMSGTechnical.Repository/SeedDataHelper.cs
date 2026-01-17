@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using CMSGTechnical.Domain.Models;
+﻿using CMSGTechnical.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace CMSGTechnical.Repository;
@@ -29,9 +28,9 @@ internal static class SeedDataHelper
                 {
                     Id = id++,
                     Order = 0,
-                    Name = "Margherita Pizza",
-                    Description = "Classic pizza with fresh tomatoes, mozzarella cheese, and basil.",
-                    Category = "Pizza",
+                    Name = "Whisker-Lickin’ Chicken Purr‑zza",
+                    Description = "A cozy pizza topped with tender chicken bites, mozzarella, and a sprinkle of catnip‑inspired herbs.",
+                    Category = "Purr‑zza",
                     Quantity = 1,
                     Price = 12.99m,
                 },
@@ -39,9 +38,9 @@ internal static class SeedDataHelper
                 {
                     Id = id++,
                     Order = 0,
-                    Name = "Caesar Salad",
-                    Description = "Crisp romaine lettuce with Caesar dressing, croutons, and parmesan cheese.",
-                    Category = "Salad",
+                    Name = "Kitty Caesar Salad",
+                    Description = "Crisp greens tossed with creamy dressing, crunchy ‘crouton kibble’, and parmesan flakes.",
+                    Category = "Salads for Good Cats",
                     Quantity = 1,
                     Price = 8.99m,
                 },
@@ -49,9 +48,9 @@ internal static class SeedDataHelper
                 {
                     Id = id++,
                     Order = 0,
-                    Name = "Grilled Salmon",
-                    Description = "Grilled salmon fillet served with a side of roasted vegetables.",
-                    Category = "Main Course",
+                    Name = "Grilled Salmon for Fancy Felines",
+                    Description = "A perfectly grilled salmon fillet served with roasted garden veggies — a true cat delicacy.",
+                    Category = "Fish Feast",
                     Quantity = 1,
                     Price = 18.99m,
                 },
@@ -59,9 +58,9 @@ internal static class SeedDataHelper
                 {
                     Id = id++,
                     Order = 0,
-                    Name = "Spaghetti Carbonara",
-                    Description = "Pasta in a creamy sauce with pancetta, parmesan cheese, and black pepper.",
-                    Category = "Pasta",
+                    Name = "Creamy Paw‑bonara",
+                    Description = "Silky pasta coated in a creamy sauce with crispy pancetta and a dash of cracked pepper.",
+                    Category = "Cat‑sta",
                     Quantity = 1,
                     Price = 14.99m,
                 },
@@ -69,9 +68,9 @@ internal static class SeedDataHelper
                 {
                     Id = id++,
                     Order = 0,
-                    Name = "Vegetable Stir Fry",
-                    Description = "Mixed vegetables stir-fried in a savory sauce, served with steamed rice.",
-                    Category = "Vegetarian",
+                    Name = "Garden Meow‑dl Stir Fry",
+                    Description = "A colorful medley of stir‑fried veggies served with fluffy rice — perfect for herbivore kitties.",
+                    Category = "Veggie Delights",
                     Quantity = 1,
                     Price = 11.99m,
                 },
@@ -79,9 +78,9 @@ internal static class SeedDataHelper
                 {
                     Id = id++,
                     Order = 0,
-                    Name = "Chicken Parmesan",
-                    Description = "Breaded chicken breast topped with marinara sauce and mozzarella cheese, served with pasta.",
-                    Category = "Main Course",
+                    Name = "Paw‑mesan Chicken Delight",
+                    Description = "Crispy breaded chicken topped with marinara and melted cheese, served with a side of pasta.",
+                    Category = "Main Purr‑course",
                     Quantity = 1,
                     Price = 16.99m,
                 },
@@ -89,9 +88,9 @@ internal static class SeedDataHelper
                 {
                     Id = id++,
                     Order = 0,
-                    Name = "Beef Tacos",
-                    Description = "Three soft tacos filled with seasoned beef, lettuce, cheese, and salsa.",
-                    Category = "Mexican",
+                    Name = "Beefy Meow‑cos",
+                    Description = "Three soft tacos stuffed with seasoned beef, shredded greens, cheese, and zesty salsa.",
+                    Category = "Meow‑xican",
                     Quantity = 1,
                     Price = 10.99m,
                 },
@@ -99,9 +98,9 @@ internal static class SeedDataHelper
                 {
                     Id = id++,
                     Order = 0,
-                    Name = "Clam Chowder",
-                    Description = "Creamy chowder with clams, potatoes, and celery.",
-                    Category = "Soup",
+                    Name = "Clawm Chowder",
+                    Description = "A warm, creamy chowder filled with clams, potatoes, and celery — perfect for cold cat days.",
+                    Category = "Soups & Slurps",
                     Quantity = 1,
                     Price = 7.99m,
                 },
@@ -109,9 +108,9 @@ internal static class SeedDataHelper
                 {
                     Id = id++,
                     Order = 0,
-                    Name = "Veggie Burger",
-                    Description = "Plant-based burger patty with lettuce, tomato, and onion on a whole wheat bun.",
-                    Category = "Vegetarian",
+                    Name = "Purr‑fect Veggie Burger",
+                    Description = "A hearty plant‑based patty with fresh toppings on a whole‑grain bun — feline‑friendly and filling.",
+                    Category = "Veggie Delights",
                     Quantity = 1,
                     Price = 9.99m,
                 },
@@ -119,9 +118,9 @@ internal static class SeedDataHelper
                 {
                     Id = id++,
                     Order = 0,
-                    Name = "Chocolate Cake",
-                    Description = "Decadent chocolate cake with rich chocolate frosting.",
-                    Category = "Dessert",
+                    Name = "Chocolate Cat‑nip Cake",
+                    Description = "A decadent chocolate dessert layered with rich frosting — strictly for humans, not actual cats.",
+                    Category = "Desserts for Hoomans",
                     Quantity = 1,
                     Price = 6.99m,
                 }
