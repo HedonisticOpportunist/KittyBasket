@@ -4,12 +4,12 @@
 <div class="mt-2 mb-2 d-flex justify-content-between">
     <div>
         <div class="menu-item">
-            <strong>@Item.Name (<span class="price">£@Item.Price</span>)</strong>
+            <strong>@Item?.Name (<span class="price">£@Item?.Price</span>)</strong>
             <div>
-                <em>@Item.Category</em>
+                <em>@Item?.Category</em>
             </div>
 
-            @if (!string.IsNullOrWhiteSpace(Item.Description))
+            @if (!string.IsNullOrWhiteSpace(Item?.Description))
             {
                 <div>
                     @Item.Description
@@ -35,7 +35,7 @@
 @code {
 
     [Parameter, EditorRequired]
-    public MenuItemDto Item { get; set; } // Enssures that chocolate is not getting selecting by mistake all the time.
+    public MenuItemDto? Item { get; set; } // Enssures that chocolate is not getting selecting by mistake all the time.
 
 
 

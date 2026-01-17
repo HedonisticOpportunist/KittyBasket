@@ -4,22 +4,17 @@ namespace CMSGTechnical.Code
 {
     public class BasketChangedEventArgs : EventArgs
     {
-        public BasketDto Basket { get; set; }
+        public BasketDto? Basket { get; set; }
     }
 
-    public class BasketService
+    public class BasketService(BasketDto basket)
     {
         public decimal Subtotal => Basket.MenuItems.Sum(i => i.Price * i.Quantity); // Calculate subtotal based on items in the basket.
         public decimal Total => Subtotal + 2.00m; // Total includes a fixed (delivery) fee.
         public decimal Fee => 2.00m;
-        public event EventHandler<BasketChangedEventArgs> OnChange;
+        public event EventHandler<BasketChangedEventArgs?> OnChange = delegate { };
 
-        public BasketDto Basket { get; }
-
-        public BasketService(BasketDto basket)
-        {
-            Basket = basket;
-        }
+        public BasketDto Basket { get; } = basket;
 
         public async Task Add(MenuItemDto item)
         {

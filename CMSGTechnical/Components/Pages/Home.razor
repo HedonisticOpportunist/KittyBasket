@@ -26,7 +26,7 @@
 
     private MenuItemDto[] MenuItems { get; set; } = Array.Empty<MenuItemDto>();
     [CascadingParameter]
-    private BasketService Basket { get; set; }
+    private BasketService? Basket { get; set; }
 
 
     protected override async Task OnInitializedAsync()
@@ -34,6 +34,18 @@
         MenuItems = (await Mediator.Send(new GetMenuItems())).ToArray();
     }
 
-    private void AddItem(MenuItemDto item) { Basket.Add(item); }
+    private void AddItem(MenuItemDto? item)
+
+    {
+        if (item is null)
+            return;
+
+        else
+        {
+
+            Basket?.Add(item);
+        }
+
+    }
 
 }

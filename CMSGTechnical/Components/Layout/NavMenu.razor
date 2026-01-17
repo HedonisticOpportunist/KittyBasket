@@ -10,10 +10,9 @@
 <div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
     <nav class="flex-column">
         <BasketDisplay @ref="Basket" />
-    </nav>
-</div>
+    </nav </div>
 
 @code
-{
-    public BasketDisplay Basket { get; private set; }
+    {
+    public BasketDisplay? Basket { get; private set; }
 }
