@@ -12,7 +12,7 @@ Below are a number of "tickets" that are needed to bring this site up to "MVP". 
 
 ### Feature Tickets
 
-- The basket needs to persist between page loads
+- The basket needs to persist between page loads 🐾
 - The basket menu needs to be responsive to fit on a mobile device 🐾
 - Menu items need to stand out when hovering over 🐾
 - Menu items need a category, and this needs to be reflected in the UI (the categories themselves are arbitary. ie: Starter, Main, Dessert) 🐾
@@ -22,9 +22,10 @@ Below are a number of "tickets" that are needed to bring this site up to "MVP". 
 
 ### Bug Tickets (sent in by QA)
 
-- When I add something to my basket on one tab, it doesn't seem to add them on the other after I refresh?
+- When I add something to my basket on one tab, it doesn't seem to add them on the other after I refresh? 🐾
 - The menu items aren't displayed in price order 🐾
 - Chocolate Cake's description isn't showing 🐾
 - The basket doesn't show £ 🐾
 - The basket total doesn't add up correctly 🐾
+
 
