@@ -1,249 +1,92 @@
-using CMSGTechnical.Code;
-using CMSGTechnical.Mediator.Dtos;
+﻿using CMSGTechnical.Mediator.Dtos;
+using Microsoft.JSInterop;
 
-namespace CMSGTechnical.Mediator.Tests
+namespace CMSGTechnical.Code
 {
-    public class BasketServiceTests
+    public class BasketChangedEventArgs : EventArgs
     {
-        [Fact]
-        public async Task TestThatItemCanBeAddedToBasket()
+        public BasketDto? Basket { get; set; }
+    }
+
+    public class BasketService
+    {
+        private readonly IJSRuntime _js;
+        private bool _initializedFromJs = false;
+
+        public decimal Subtotal => Basket.MenuItems.Sum(i => i.Price * i.Quantity);
+        public decimal Total => Subtotal + 2.00m;
+        public decimal Fee => 2.00m;
+
+        public event EventHandler<BasketChangedEventArgs?> OnChange = delegate { };
+
+        public BasketDto Basket { get; private set; }
+
+        public BasketService(BasketDto basket, IJSRuntime js)
         {
-            var basketDto = new BasketDto();
-            var basket = new BasketService(basketDto);
-
-            var item = new MenuItemDto
-            {
-                Id = 1,
-                Name = "Cake",
-                Price = 3,
-            };
-
-            await basket.Add(item);
-
-            Assert.Single(basket.Basket.MenuItems);
+            Basket = basket;
+            _js = js;
         }
 
-        [Fact]
-        public async Task TestThatItemCanBeRemovedFromBasket()
+        // 🔹 Load basket from localStorage AFTER the circuit is ready
+        public async Task InitializeFromJsAsync()
         {
-            var basketDto = new BasketDto();
-            var basket = new BasketService(basketDto);
+            if (_initializedFromJs)
+                return;
 
-            var item = new MenuItemDto
-            {
-                Id = 1,
-                Name = "Cake",
-                Price = 3,
-            };
+            var loaded = await _js.InvokeAsync<BasketDto>("basketStore.load");
 
-            await basket.Add(item);
-            await basket.Remove(item);
+            if (loaded?.MenuItems?.Any() == true)
+                Basket = loaded;
 
-            Assert.Empty(basket.Basket.MenuItems);
+            _initializedFromJs = true;
+
+            OnChange?.Invoke(this, new BasketChangedEventArgs { Basket = Basket });
         }
 
-        [Fact]
-        public async Task TestThatSubtotalAndTotalAreCalculatedCorrectly()
+        // 🔹 Add item + persist
+        public async Task Add(MenuItemDto item)
         {
-            var basketDto = new BasketDto();
-            var basket = new BasketService(basketDto);
+            var existing = Basket.MenuItems.FirstOrDefault(i => i.Id == item.Id);
 
-            var item1 = new MenuItemDto
+            if (existing != null)
             {
-                Id = 1,
-                Name = "Cake",
-                Price = 3,
-            };
-
-            var item2 = new MenuItemDto
+                existing.Quantity += 1;
+            }
+            else
             {
-                Id = 2,
-                Name = "Pie",
-                Price = 5,
-            };
+                Basket.MenuItems.Add(
+                    new MenuItemDto
+                    {
+                        Id = item.Id,
+                        Name = item.Name,
+                        Price = item.Price,
+                        Category = item.Category,
+                        Description = item.Description,
+                        Quantity = 1,
+                    }
+                );
+            }
 
-            await basket.Add(item1);
-            await basket.Add(item2);
+            await _js.InvokeVoidAsync("basketStore.save", Basket);
 
-            Assert.Equal(8.00m, basket.Subtotal);
-            Assert.Equal(10.00m, basket.Total); // Subtotal + 2.00 fee
+            OnChange?.Invoke(this, new BasketChangedEventArgs { Basket = Basket });
         }
 
-        [Fact]
-        public async Task TestThatOnChangeEventIsTriggered()
+        // 🔹 Remove item + persist
+        public async Task Remove(MenuItemDto item)
         {
-            var basketDto = new BasketDto();
-            var basket = new BasketService(basketDto);
+            var existing = Basket.MenuItems.FirstOrDefault(i => i.Id == item.Id);
+            if (existing is null)
+                return;
 
-            var item = new MenuItemDto
-            {
-                Id = 1,
-                Name = "Cake",
-                Price = 3,
-            };
+            existing.Quantity -= 1;
 
-            bool eventTriggered = false;
-            basket.OnChange += (sender, args) =>
-            {
-                eventTriggered = true;
-                Assert.NotNull(args);
-                Assert.NotNull(args.Basket);
-            };
+            if (existing.Quantity <= 0)
+                Basket.MenuItems.Remove(existing);
 
-            await basket.Add(item);
+            await _js.InvokeVoidAsync("basketStore.save", Basket);
 
-            Assert.True(eventTriggered);
-        }
-
-        [Fact]
-        public async Task TestThatRemovingNonExistentItemDoesNotThrow()
-        {
-            var basketDto = new BasketDto();
-            var basket = new BasketService(basketDto);
-
-            var item = new MenuItemDto
-            {
-                Id = 1,
-                Name = "Cake",
-                Price = 3,
-            };
-
-            var exception = await Record.ExceptionAsync(() => basket.Remove(item));
-
-            Assert.Null(exception);
-        }
-
-        [Fact]
-        public async Task TestThatAddingSameItemIncreasesQuantity()
-        {
-            var basketDto = new BasketDto();
-            var basket = new BasketService(basketDto);
-
-            var item = new MenuItemDto
-            {
-                Id = 1,
-                Name = "Cake",
-                Price = 3,
-            };
-
-            await basket.Add(item);
-            await basket.Add(item);
-
-            var addedItem = basket.Basket.MenuItems.FirstOrDefault(i => i.Id == item.Id);
-            Assert.NotNull(addedItem);
-            Assert.Equal(2, addedItem.Quantity);
-        }
-
-        [Fact]
-        public async Task TestThatRemovingItemDecreasesQuantity()
-        {
-            var basketDto = new BasketDto();
-            var basket = new BasketService(basketDto);
-
-            var item = new MenuItemDto
-            {
-                Id = 1,
-                Name = "Cake",
-                Price = 3,
-            };
-
-            await basket.Add(item);
-            await basket.Add(item);
-            await basket.Remove(item);
-
-            var remainingItem = basket.Basket.MenuItems.FirstOrDefault(i => i.Id == item.Id);
-            Assert.NotNull(remainingItem);
-            Assert.Equal(1, remainingItem.Quantity);
-        }
-
-        [Fact]
-        public async Task TestThatRemovingItemToZeroRemovesItFromBasket()
-        {
-            var basketDto = new BasketDto();
-            var basket = new BasketService(basketDto);
-
-            var item = new MenuItemDto
-            {
-                Id = 1,
-                Name = "Cake",
-                Price = 3,
-            };
-
-            await basket.Add(item);
-            await basket.Remove(item);
-
-            var removedItem = basket.Basket.MenuItems.FirstOrDefault(i => i.Id == item.Id);
-            Assert.Null(removedItem);
-        }
-
-        [Fact]
-        public async Task TestThatFeeIsConstant()
-        {
-            var basketDto = new BasketDto();
-            var basket = new BasketService(basketDto);
-
-            Assert.Equal(2.00m, basket.Fee);
-        }
-
-        [Fact]
-        public async Task TestThatBasketStartsEmpty()
-        {
-            var basketDto = new BasketDto();
-            var basket = new BasketService(basketDto);
-
-            Assert.Empty(basket.Basket.MenuItems);
-        }
-
-        [Fact]
-        public async Task TestThatMultipleItemsCanBeAdded()
-        {
-            var basketDto = new BasketDto();
-            var basket = new BasketService(basketDto);
-
-            var item1 = new MenuItemDto
-            {
-                Id = 1,
-                Name = "Cake",
-                Price = 3,
-            };
-
-            var item2 = new MenuItemDto
-            {
-                Id = 2,
-                Name = "Pie",
-                Price = 5,
-            };
-
-            await basket.Add(item1);
-            await basket.Add(item2);
-
-            Assert.Equal(2, basket.Basket.MenuItems.Count);
-        }
-
-        [Fact]
-        public async Task TestThatBasketIsUpdatedWhenItemsAreAdded()
-        {
-            var basketDto = new BasketDto();
-            var basket = new BasketService(basketDto);
-
-            var item1 = new MenuItemDto
-            {
-                Id = 1,
-                Name = "Cake",
-                Price = 3,
-            };
-
-            var item2 = new MenuItemDto
-            {
-                Id = 2,
-                Name = "Pie",
-                Price = 5,
-            };
-
-            await basket.Add(item1);
-            await basket.Add(item2);
-
-            Assert.Equal(2, basket.Basket.MenuItems.Count);
+            OnChange?.Invoke(this, new BasketChangedEventArgs { Basket = Basket });
         }
     }
 }

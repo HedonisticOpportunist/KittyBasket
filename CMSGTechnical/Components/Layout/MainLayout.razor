@@ -1,7 +1,8 @@
-﻿@using CMSGTechnical.Code
+﻿﻿@using CMSGTechnical.Code
 @using CMSGTechnical.Components.Shared
 @using CMSGTechnical.Domain.Models
 @using CMSGTechnical.Mediator.Basket
+@using CMSGTechnical.Mediator.Dtos
 @using MediatR
 @inherits LayoutComponentBase
 
@@ -29,16 +30,31 @@
     <a class="dismiss">🗙</a>
 </div>
 
-
 @code
 {
     private BasketService? BasketService { get; set; }
 
     [Inject] private IMediator Mediator { get; set; } = default!;
+    [Inject] private IJSRuntime JS { get; set; } = default!;
 
     protected override async Task OnInitializedAsync()
     {
-        var basket = await Mediator.Send(new GetBasket(1));
-        BasketService = new BasketService(basket);
+        // Load initial basket from backend (may be null because DB is in-memory)
+        var basket = await Mediator.Send(new GetBasket(1))
+        ?? new BasketDto(); // ensure non-null
+
+        // Construct the BasketService (safe during prerender)
+        BasketService = new BasketService(basket, JS);
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            // Load persisted basket from localStorage (JS allowed now)
+            await BasketService!.InitializeFromJsAsync();
+
+            StateHasChanged();
+        }
     }
 }

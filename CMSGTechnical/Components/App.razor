@@ -9,11 +9,18 @@
     <link rel="stylesheet" href="app.css" />
     <link rel="stylesheet" href="CMSGTechnical.styles.css" />
     <link rel="icon" type="image/png" href="favicon.png" />
+
+    <!-- ⭐ Required for .NET 8 interactive components -->
     <HeadOutlet @rendermode="InteractiveServer" />
+
+    <title>Cat Menu Service Gateway</title>
 </head>
 
 <body>
+    <!-- ⭐ Only ONE Routes component, and only in body -->
     <Routes @rendermode="InteractiveServer" />
+
+    <script src="basket.js"></script>
     <script src="_framework/blazor.web.js"></script>
 </body>
 
