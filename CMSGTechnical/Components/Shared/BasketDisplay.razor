@@ -1,8 +1,11 @@
-﻿@using CMSGTechnical.Code
+@using CMSGTechnical.Code
 @using CMSGTechnical.Mediator.Dtos
 
 <div class="basket">
 
+    <!-- Render each item currently in the basket.
+         Using @key ensures Blazor preserves component identity
+         when quantities change or items are added/removed. -->
     @foreach (var item in Basket.MenuItems)
     {
         <div class="basket-item" @key="item.Id">
@@ -12,12 +15,15 @@
             </div>
 
             <div>
+                <!-- Add/remove buttons delegate to BasketService.
+                     The lambdas capture the correct item instance. -->
                 <button class="btn btn-primary btn-round" @onclick="() => Add(item)">🐾</button>
                 <button class="btn btn-primary btn-round" @onclick="() => Remove(item)">🗑️</button>
             </div>
         </div>
     }
 
+    <!-- Summary section driven entirely by BasketService state -->
     <div class="mt-3">
         Subtotal: £ @BasketService.Subtotal
     </div>
@@ -31,25 +37,35 @@
 
 @code {
 
+    // BasketService is cascaded from the Layout.
+    // This component does not own state; it *observes* BasketService.
     [CascadingParameter]
     private BasketService BasketService { get; set; } = default!;
 
+    // Convenience accessor for the underlying BasketDto.
     private BasketDto Basket => BasketService.Basket;
 
+    // Local reference to the event handler so it can be unsubscribed.
     private EventHandler<BasketChangedEventArgs>? _handler;
 
     protected override void OnInitialized()
     {
+        // Subscribe to BasketService change notifications.
+        // When the basket changes (add/remove/JS sync), re-render this component.
         _handler = (sender, args) => StateHasChanged();
         BasketService.OnChange += _handler;
     }
 
     public void Dispose()
     {
+        // Cleanly detach the event handler to avoid memory leaks
+        // and prevent callbacks after the component is destroyed.
         if (_handler is not null)
             BasketService.OnChange -= _handler;
     }
 
+    // Delegate operations to BasketService.
+    // BasketService handles persistence, JS sync, and event dispatch.
     private Task Add(MenuItemDto item) => BasketService.Add(item);
     private Task Remove(MenuItemDto item) => BasketService.Remove(item);
 }
