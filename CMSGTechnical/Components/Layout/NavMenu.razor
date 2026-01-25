@@ -1,18 +1,29 @@
-﻿﻿@using CMSGTechnical.Components.Shared
+@using CMSGTechnical.Components.Shared
+
+<!-- Top navigation bar with a playful brand icon -->
 <div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="">≽^•⩊•^≼</a>
     </div>
 </div>
 
+<!-- Checkbox-driven mobile nav toggle.
+     This pattern avoids JS and uses CSS to show/hide the menu. -->
 <input type="checkbox" title="Navigation menu" class="navbar-toggler" />
 
+<!-- Scrollable navigation container.
+     The onclick closes the menu by toggling the checkbox again,
+     giving you a simple "click outside to close" behavior. -->
 <div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
     <nav class="flex-column">
+        <!-- BasketDisplay is referenced so the parent can call methods on it.
+             This is a child-component reference, *not* a cascading parameter. -->
         <BasketDisplay @ref="Basket" />
-    </nav </div>
+    </nav>
+</div>
 
-@code
-    {
+@code {
+    // Reference to the BasketDisplay component instance.
+    // Useful when the parent needs to trigger refreshes or call public methods.
     public BasketDisplay? Basket { get; private set; }
 }
