@@ -1,4 +1,4 @@
-﻿@page "/"
+@page "/"
 @using CMSGTechnical.Code
 @using CMSGTechnical.Domain.Models
 @using CMSGTechnical.Mediator.Menu
@@ -8,41 +8,48 @@
 
 <PageTitle>Home</PageTitle>
 
-
-
+<!-- Render each menu item using a dedicated display component.
+     Using a for-loop (instead of foreach) avoids closure pitfalls
+     when capturing loop variables in lambdas. -->
 @for (var i = 0; i < MenuItems.Count(); i++)
 {
     var item = MenuItems[i];
-    <MenuItemDisplay Item="@item" OnAdd="() => AddItem(item)" />
 
+    <!-- MenuItemDisplay receives the item and an OnAdd callback.
+         The callback is a lambda that binds the current item correctly. -->
+    <MenuItemDisplay Item="@item" OnAdd="() => AddItem(item)" />
 }
 
 @code
 {
+    // MediatR is your backend boundary. This page queries the menu
+    // through a CQRS-style request rather than directly accessing a repository.
     [Inject] private IMediator Mediator { get; set; } = default!;
 
-
+    // Menu items loaded from the backend.
     private MenuItemDto[] MenuItems { get; set; } = Array.Empty<MenuItemDto>();
+
+    // BasketService is cascaded from the Layout.
+    // This gives the page access to the shared basket state.
     [CascadingParameter]
     private BasketService? Basket { get; set; }
 
-
     protected override async Task OnInitializedAsync()
     {
+        // Fetch menu items from the backend.
+        // Using ToArray ensures stable indexing for the for-loop.
         MenuItems = (await Mediator.Send(new GetMenuItems())).ToArray();
     }
 
     private void AddItem(MenuItemDto? item)
-
     {
+        // Defensive null check: MenuItemDisplay should never pass null,
+        // but this protects against accidental misuse.
         if (item is null)
             return;
 
-        else
-        {
-
-            Basket?.Add(item);
-        }
-
+        // Delegate the actual add operation to BasketService.
+        // BasketService handles persistence, JS sync, and state notifications.
+        Basket?.Add(item);
     }
 }
