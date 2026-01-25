@@ -1,4 +1,4 @@
-﻿﻿@using CMSGTechnical.Code
+@using CMSGTechnical.Code
 @using CMSGTechnical.Components.Shared
 @using CMSGTechnical.Domain.Models
 @using CMSGTechnical.Mediator.Basket
@@ -7,6 +7,9 @@
 @inherits LayoutComponentBase
 
 <div class="page">
+    <!-- Provide BasketService to all descendants via cascading DI.
+         This allows any component in the layout subtree to access the basket
+         without explicit parameter passing. -->
     <CascadingValue TValue="BasketService" Value="@BasketService">
         <div class="sidebar">
             <NavMenu />
@@ -14,16 +17,19 @@
 
         <main>
             <div class="top-row px-4">
+                <!-- Fun GitHub link in the header -->
                 <a href="https://github.com/HedonisticOpportunist" target="_blank">=＾● ⋏ ●＾=</a>
             </div>
 
             <article class="content px-4">
+                <!-- Render the page content for the current route -->
                 @Body
             </article>
         </main>
     </CascadingValue>
 </div>
 
+<!-- Standard Blazor error UI block -->
 <div id="blazor-error-ui">
     An unhandled error has occurred.
     <a href="" class="reload">Reload</a>
@@ -32,18 +38,26 @@
 
 @code
 {
+    // The BasketService instance shared across the layout.
+    // Nullable because it is constructed asynchronously.
     private BasketService? BasketService { get; set; }
 
+    // MediatR for backend communication (CQRS-style).
     [Inject] private IMediator Mediator { get; set; } = default!;
+
+    // JSRuntime for localStorage access (only safe after first render).
     [Inject] private IJSRuntime JS { get; set; } = default!;
 
     protected override async Task OnInitializedAsync()
     {
-        // Load initial basket from backend (may be null because DB is in-memory)
+        // Fetch the initial basket from the backend.
+        // Because the DB is in-memory, the basket may not exist yet.
+        // Using ?? ensures we always have a valid BasketDto.
         var basket = await Mediator.Send(new GetBasket(1))
-        ?? new BasketDto(); // ensure non-null
+            ?? new BasketDto();
 
-        // Construct the BasketService (safe during prerender)
+        // Construct BasketService during prerender.
+        // This is safe because the constructor does not call JS.
         BasketService = new BasketService(basket, JS);
     }
 
@@ -51,9 +65,11 @@
     {
         if (firstRender)
         {
-            // Load persisted basket from localStorage (JS allowed now)
+            // Now that JS interop is allowed, load any persisted basket
+            // from localStorage and merge it into the in-memory basket.
             await BasketService!.InitializeFromJsAsync();
 
+            // Trigger a re-render so components receive the updated basket.
             StateHasChanged();
         }
     }
