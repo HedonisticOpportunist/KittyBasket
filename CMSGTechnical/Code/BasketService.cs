@@ -10,24 +10,26 @@ namespace CMSGTechnical.Code
 
     public class BasketService
     {
-        private readonly IJSRuntime _js;
+        private readonly IJSRuntime _js; // Reference to JavaScript runtime, used to call JS functions from Blazor.
         private bool _initializedFromJs = false;
 
         public decimal Subtotal => Basket.MenuItems.Sum(i => i.Price * i.Quantity);
         public decimal Total => Subtotal + 2.00m;
         public decimal Fee => 2.00m;
 
+        // Event fired whenever basked changes. 
         public event EventHandler<BasketChangedEventArgs?> OnChange = delegate { };
 
         public BasketDto Basket { get; private set; }
 
         public BasketService(BasketDto basket, IJSRuntime js)
         {
+            // Constructor receives the initial basket data and the reference to JS runtime. 
             Basket = basket;
             _js = js;
         }
 
-        // 🔹 Load basket from localStorage AFTER the circuit is ready
+        // Load basket from localStorage AFTER the circuit is ready. 
         public async Task InitializeFromJsAsync()
         {
             if (_initializedFromJs)
@@ -43,7 +45,7 @@ namespace CMSGTechnical.Code
             OnChange?.Invoke(this, new BasketChangedEventArgs { Basket = Basket });
         }
 
-        // 🔹 Add item + persist
+        // Add item + persist
         public async Task Add(MenuItemDto item)
         {
             var existing = Basket.MenuItems.FirstOrDefault(i => i.Id == item.Id);
@@ -72,7 +74,7 @@ namespace CMSGTechnical.Code
             OnChange?.Invoke(this, new BasketChangedEventArgs { Basket = Basket });
         }
 
-        // 🔹 Remove item + persist
+        // Remove item + persist
         public async Task Remove(MenuItemDto item)
         {
             var existing = Basket.MenuItems.FirstOrDefault(i => i.Id == item.Id);
@@ -90,3 +92,4 @@ namespace CMSGTechnical.Code
         }
     }
 }
+
