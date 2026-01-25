@@ -1,0 +1,28 @@
+┌────────────┐
+│   Domain   │  (Entities, rules)
+└──────┬─────┘
+       │
+       ▼
+┌────────────┐
+│   MediatR  │  (Handlers orchestrate use cases)
+└──────┬─────┘
+       │ maps
+       ▼
+┌────────────┐
+│    DTO     │  (Safe, flat data)
+└──────┬─────┘
+       │ sent to UI
+       ▼
+┌────────────┐
+│   Blazor   │  (Components render DTOs)
+└──────┬─────┘
+       │ delegates
+       ▼
+┌────────────┐
+│BasketService│ (Client state + JS sync)
+└──────┬─────┘
+       │ persists
+       ▼
+┌────────────┐
+│ localStorage│ (Browser persistence)
+└────────────┘
