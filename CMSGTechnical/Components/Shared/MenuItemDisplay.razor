@@ -1,18 +1,22 @@
-﻿@using CMSGTechnical.Domain.Models
+@using CMSGTechnical.Domain.Models
 @using CMSGTechnical.Mediator.Dtos
 
 <div class="menu-row">
     <div class="menu-left">
         <div class="menu-item">
+
+            <!-- Title + price block -->
             <p class="menu-title">
                 <strong>@Item?.Name</strong>
                 <span class="price">£@Item?.Price</span>
             </p>
 
+            <!-- Category label -->
             <p class="menu-category">
                 <em>@Item?.Category</em>
             </p>
 
+            <!-- Optional description -->
             @if (!string.IsNullOrWhiteSpace(Item?.Description))
             {
                 <p class="menu-description">@Item.Description</p>
@@ -20,6 +24,9 @@
         </div>
     </div>
 
+    <!-- Action buttons (add/remove).
+         Buttons only render if the parent supplied the corresponding callback.
+         This makes the component reusable in contexts where only one action is allowed. -->
     <div class="menu-buttons">
         @if (OnAdd.HasDelegate)
         {
@@ -34,17 +41,22 @@
 
 @code {
 
+    // The menu item to display.
+    // EditorRequired ensures the parent must supply this parameter,
+    // preventing accidental nulls or incorrect default selections.
     [Parameter, EditorRequired]
-    public MenuItemDto? Item { get; set; } // Ensures that chocolate is not getting selecting by mistake all the time.
+    public MenuItemDto? Item { get; set; }
 
+    // Optional callbacks for adding/removing the item.
+    // The parent decides which actions are available.
     [Parameter]
     public EventCallback<MenuItemDto> OnAdd { get; set; }
 
     [Parameter]
     public EventCallback<MenuItemDto> OnRemove { get; set; }
 
+    // Invoke the callbacks with the current item.
+    // Using async Task ensures proper Blazor event handling.
     private async Task Remove() => await OnRemove.InvokeAsync(Item);
     private async Task Add() => await OnAdd.InvokeAsync(Item);
-
-
 }
